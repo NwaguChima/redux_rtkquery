@@ -89,7 +89,7 @@ export const postsSlice = createSlice({
         state.status = "succeeded";
         // adding date and reactions to the posts
         let min = 1;
-        const loadedPosts = action.payload.map((post) => {
+        let loadedPosts = action.payload.map((post) => {
           post.date = sub(new Date(), { minutes: min++ }).toISOString();
           post.reactions = {
             thumbsUp: 0,
@@ -102,7 +102,7 @@ export const postsSlice = createSlice({
         });
 
         // add any fetched posts to the array of posts
-        state.posts = state.posts.concat(loadedPosts);
+        state.posts = loadedPosts;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";

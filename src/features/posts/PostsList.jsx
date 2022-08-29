@@ -9,6 +9,7 @@ import {
 import PostAuthor from "./PostAuthor";
 import ReactionButtons from "./ReactionButtons";
 import TimeAgo from "./TimeAgo";
+import PostsExcerpts from "./PostsExcerpts";
 
 const PostsList = () => {
   const dispatch = useDispatch();
@@ -23,18 +24,22 @@ const PostsList = () => {
     }
   }, [dispatch, postsStatus]);
 
-  const orderedPosts = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
-
-  const renderedPosts = orderedPosts.map((post) => (
-    
-  ));
+  let content;
+  if (postsStatus === "loading") {
+    content = <p>Loading...</p>;
+  } else if (postsStatus === "succeeded") {
+    const orderedPosts = posts.sort((a, b) => b.date.localeCompare(a.date));
+    content = orderedPosts.map((post) => (
+      <PostsExcerpts key={post.id} post={post} />
+    ));
+  } else if (postsStatus === "failed") {
+    content = <p>{error}</p>;
+  }
 
   return (
     <section>
       <h2>Posts</h2>
-      {renderedPosts}
+      {content}
     </section>
   );
 };

@@ -6,9 +6,6 @@ import {
   getPostsError,
   fetchPosts,
 } from "./postsSlice";
-import PostAuthor from "./PostAuthor";
-import ReactionButtons from "./ReactionButtons";
-import TimeAgo from "./TimeAgo";
 import PostsExcerpts from "./PostsExcerpts";
 
 const PostsList = () => {
@@ -23,14 +20,17 @@ const PostsList = () => {
       dispatch(fetchPosts());
     }
   }, [dispatch, postsStatus]);
+  console.log("posts", posts);
 
   let content;
   if (postsStatus === "loading") {
     content = <p>Loading...</p>;
   } else if (postsStatus === "succeeded") {
-    const orderedPosts = posts.sort((a, b) => b.date.localeCompare(a.date));
+    const orderedPosts = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
     content = orderedPosts.map((post) => (
-      <PostsExcerpts key={post.id} post={post} />
+      <PostsExcerpts key={post.date} post={post} />
     ));
   } else if (postsStatus === "failed") {
     content = <p>{error}</p>;

@@ -27,11 +27,13 @@ header {
   padding: 1rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: center;
   background-color: purple;
   color: whitesmoke;
   position: sticky;
   top: 0;
+  margin-bottom: 80px;
 }
 
 nav {

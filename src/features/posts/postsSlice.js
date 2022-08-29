@@ -7,12 +7,26 @@ const initialState = [
     title: "Learning Redux toolkit",
     content: "Ive been looking at this for a while",
     date: sub(new Date(), { minutes: 10 }).toISOString(),
+    reactions: {
+      thumbsUp: 0,
+      wow: 0,
+      heart: 0,
+      rocket: 0,
+      coffee: 0,
+    },
   },
   {
     id: 2,
     title: "Learning React",
     content: "Ive been looking at this for a while",
     date: sub(new Date(), { minutes: 20 }).toISOString(),
+    reactions: {
+      thumbsUp: 0,
+      wow: 0,
+      heart: 0,
+      rocket: 0,
+      coffee: 0,
+    },
   },
 ];
 
@@ -33,6 +47,15 @@ export const postsSlice = createSlice({
             content,
             date: new Date().toISOString(),
             userId,
+            reactions: {
+              reactions: {
+                thumbsUp: 0,
+                wow: 0,
+                heart: 0,
+                rocket: 0,
+                coffee: 0,
+              },
+            },
           },
         };
       },

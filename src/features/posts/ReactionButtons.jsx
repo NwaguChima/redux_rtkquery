@@ -9,10 +9,25 @@ const reactionEmoji = {
   coffee: "☕️",
 };
 
-import React from "react";
+const ReactionButtons = ({ post }) => {
+  const dispatch = useDispatch();
 
-const ReactionButtons = () => {
-  return <div>ReactionButtons</div>;
+  const reactionButtons = Object.keys(reactionEmoji).map(([name, emoji]) => {
+    return (
+      <button
+        key={name}
+        type="button"
+        className="reactionButton"
+        onClick={() =>
+          dispatch(reactionAdded({ postId: post.id, reaction: name }))
+        }
+      >
+        {emoji} {post.reactions[name]}
+      </button>
+    );
+  });
+
+  return <div>{reactionButtons}</div>;
 };
 
 export default ReactionButtons;

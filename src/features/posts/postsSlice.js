@@ -131,6 +131,7 @@ export const postsSlice = createSlice({
           coffee: 0,
         };
         state.posts.push(action.payload);
+        console.log("state.posts", state.posts);
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         if (!action.payload?.id) {

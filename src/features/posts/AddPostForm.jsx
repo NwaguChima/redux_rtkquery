@@ -1,20 +1,25 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { postAdded } from "./postsSlice";
+import { selectAllUsers } from "../users/usersSlice";
 
 const AddPostForm = () => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
+  const [userId, setUserId] = React.useState("");
+
+  const users = useSelector(selectAllUsers);
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
+  const onAuthorChanged = (e) => setUserId(e.target.value);
 
   const dispatch = useDispatch();
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(postAdded(title, content));
+      dispatch(postAdded(title, content, userId));
     }
 
     setTitle("");

@@ -9,6 +9,7 @@ import { fetchPosts } from "./features/posts/postsSlice";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// fetching on initial render
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 

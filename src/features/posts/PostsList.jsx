@@ -8,6 +8,7 @@ const PostsList = () => {
   const postsStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
 
+  // For page rendering
   let content;
   if (postsStatus === "loading") {
     content = <p>Loading...</p>;

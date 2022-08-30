@@ -19,7 +19,12 @@ const UserPage = () => {
     </li>
   ));
 
-  return <div>UserPage</div>;
+  return (
+    <section>
+      <h2>{user?.name}</h2>
+      <ol>{postTitles}</ol>
+    </section>
+  );
 };
 
 export default UserPage;

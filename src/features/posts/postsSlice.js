@@ -2,18 +2,22 @@ import {
   createSlice,
   createAsyncThunk,
   createSelector,
+  createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import axios from "axios";
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 
-const initialState = {
-  posts: [],
+const postAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
+});
+
+const initialState = postAdapter.getInitialState({
   status: "idle", // idle, loading, succeeded, failed
   error: null,
   count: 0,
-};
+});
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
@@ -91,7 +95,7 @@ export const postsSlice = createSlice({
     // },
     reactionAdded: (state, action) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find((post) => post.id === postId);
+      const existingPost = state.entities[postId];
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
@@ -122,7 +126,7 @@ export const postsSlice = createSlice({
         });
 
         // add any fetched posts to the array of posts
-        state.posts = loadedPosts;
+        postAdapter.upsertMany(state, loadedPosts);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -138,8 +142,7 @@ export const postsSlice = createSlice({
           rocket: 0,
           coffee: 0,
         };
-        state.posts.push(action.payload);
-        console.log("state.posts", state.posts);
+        postAdapter.addOne(state, action.payload);
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         if (!action.payload?.id) {
@@ -148,10 +151,8 @@ export const postsSlice = createSlice({
           return;
         }
 
-        const { id } = action.payload;
         action.payload.date = new Date().toISOString();
-        const posts = state.posts.filter((post) => post.id !== id);
-        state.posts = [...posts, action.payload];
+        postAdapter.upsertOne(state, action.payload);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         if (!action.payload?.id) {
@@ -160,8 +161,7 @@ export const postsSlice = createSlice({
           return;
         }
         const { id } = action.payload;
-        const posts = state.posts.filter((post) => post.id !== id);
-        state.posts = [...posts];
+        postAdapter.removeOne(state, id);
       });
   },
 });

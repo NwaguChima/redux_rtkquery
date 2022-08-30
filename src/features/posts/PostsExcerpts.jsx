@@ -5,7 +5,7 @@ import TimeAgo from "./TimeAgo";
 
 import { Link } from "react-router-dom";
 
-const PostsExcerpts = ({ post }) => {
+const PostsExcerpts = ({ postId }) => {
   return (
     <article>
       <h2>{post.title}</h2>

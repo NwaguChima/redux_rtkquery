@@ -166,13 +166,16 @@ export const postsSlice = createSlice({
   },
 });
 
-export const selectAllPosts = (state) => state.posts.posts;
+// getSelectors creates these selectors and we rename them with aliases using destructuring
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostIds,
+} = postAdapter.getSelectors((state) => state.posts);
+
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
 export const getCount = (state) => state.posts.count;
-
-export const seletPostById = (state, postId) =>
-  state.posts.posts.find((post) => post.id === postId);
 
 export const selectPostsByUser = createSelector(
   [selectAllPosts, (state, userId) => userId],

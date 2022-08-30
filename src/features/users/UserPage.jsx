@@ -12,6 +12,13 @@ const UserPage = () => {
     const allPosts = selectAllPosts(state);
     return allPosts.filter((post) => post.userId === Number(userId));
   });
+
+  const postTitles = postsForUser.map((post) => (
+    <li key={post.id}>
+      <Link to={`/post/${post.id}`}>{post.title}</Link>
+    </li>
+  ));
+
   return <div>UserPage</div>;
 };
 

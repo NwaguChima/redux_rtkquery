@@ -2,11 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectPostIds, getPostsStatus, getPostsError } from "./postsSlice";
 import PostsExcerpts from "./PostsExcerpts";
+import { useGetPostsQuery } from "./postsSlice";
 
 const PostsList = () => {
+  const { isLoading, isSuccess, isError, error } = useGetPostsQuery();
   const orderedPostIds = useSelector(selectPostIds);
   const postsStatus = useSelector(getPostsStatus);
-  const error = useSelector(getPostsError);
 
   // For page rendering
   let content;

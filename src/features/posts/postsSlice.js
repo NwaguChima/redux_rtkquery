@@ -36,10 +36,37 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         ...result.ids.map((id) => ({ type: "Post", id })),
       ],
     }),
+
+    getPostsByUserId: builder.query({
+      query: (userId) => `posts?userId=${userId}`,
+      transformResponse: (responseData) => {
+        let min = 1;
+        const loadedPosts = responseData.map((post) => {
+          if (!post?.data)
+            post.date = sub(new Date(), { minutes: min++ }).toISOString();
+          if (!post?.reaction)
+            post.reaction = {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            };
+
+          return post;
+        });
+
+        return postAdapter.setAll(initialState, loadedPosts);
+      },
+      providesTags: (result, error, arg) => {
+        console.log("result", result);
+        return [...result.ids.map((id) => ({ type: "Post", id }))];
+      },
+    }),
   }),
 });
 
-export const { useGetPostsQuery } = extendedApiSlice;
+export const { useGetPostsQuery, useGetPostsByUserIdQuery } = extendedApiSlice;
 
 export const selectPostsResult = extendedApiSlice.endpoints.getPosts.select();
 

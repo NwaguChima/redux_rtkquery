@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { deletePost, selectPostById, updatePost } from "./postsSlice";
+import { useSelector } from "react-redux";
+import { selectPostById } from "./postsSlice";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { selectAllUsers } from "../users/usersSlice";

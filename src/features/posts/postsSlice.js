@@ -1,13 +1,5 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createSelector,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
+import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
-import axios from "axios";
-
-const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 
 const postAdapter = createEntityAdapter({
   sortComparer: (a, b) => b.date.localeCompare(a.date),
@@ -19,80 +11,11 @@ const initialState = postAdapter.getInitialState({
   count: 0,
 });
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  try {
-    const response = await axios.get(POSTS_URL);
-    return [...response.data];
-  } catch (error) {
-    return error.message;
-  }
-});
-
-export const addNewPost = createAsyncThunk(
-  "posts/addNewPost",
-  async (initialPost) => {
-    try {
-      const response = await axios.post(POSTS_URL, initialPost);
-      return response.data;
-    } catch (error) {
-      return error.message;
-    }
-  }
-);
-
-export const updatePost = createAsyncThunk(
-  "posts/updatePost",
-  async (updatedPost) => {
-    const { id } = updatedPost;
-    try {
-      const response = await axios.put(`${POSTS_URL}/${id}`, updatedPost);
-      return response.data;
-    } catch (error) {
-      return error.message;
-    }
-  }
-);
-
-export const deletePost = createAsyncThunk("posts/deletePost", async (post) => {
-  const { id } = post;
-  try {
-    const response = await axios.delete(`${POSTS_URL}/${id}`);
-    if (response?.status === 200) return post;
-
-    return `${response?.status}: ${response?.statusText}`;
-  } catch (error) {
-    return error.message;
-  }
-});
-
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
 
   reducers: {
-    // postAdded: {
-    //   reducer(state, action) {
-    //     state.posts.push(action.payload);
-    //   },
-    //   prepare(title, content, userId) {
-    //     return {
-    //       payload: {
-    //         id: nanoid(),
-    //         title,
-    //         content,
-    //         date: new Date().toISOString(),
-    //         userId,
-    //         reactions: {
-    //           thumbsUp: 0,
-    //           wow: 0,
-    //           heart: 0,
-    //           rocket: 0,
-    //           coffee: 0,
-    //         },
-    //       },
-    //     };
-    //   },
-    // },
     reactionAdded: (state, action) => {
       const { postId, reaction } = action.payload;
       const existingPost = state.entities[postId];

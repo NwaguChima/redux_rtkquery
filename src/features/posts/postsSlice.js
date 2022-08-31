@@ -11,14 +11,14 @@ const initialState = postAdapter.getInitialState();
 export const extendedApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: () => "posts",
+      query: () => "/posts",
       transformResponse: (responseData) => {
         let min = 1;
         const loadedPosts = responseData.map((post) => {
           if (!post?.data)
             post.date = sub(new Date(), { minutes: min++ }).toISOString();
-          if (!post?.reaction)
-            post.reaction = {
+          if (!post?.reactions)
+            post.reactions = {
               thumbsUp: 0,
               wow: 0,
               heart: 0,

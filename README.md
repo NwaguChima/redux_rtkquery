@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This BLOG project, basically built to show advanced REDUX toolkit and react setup, Optimizations for performance.
+This BLOG project, basically built to show advanced REDUX toolkit and react setup, Optimizations for performance, and RTK Query.
 
 ## Available Scripts
 

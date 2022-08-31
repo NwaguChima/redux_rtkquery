@@ -31,26 +31,27 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
         return postAdapter.setAll(initialState, loadedPosts);
       },
+      providesTags: (result, error, arg) => [
+        { type: "Post", id: "LIST" },
+        ...result.ids.map((id) => ({ type: "Post", id })),
+      ],
     }),
   }),
 });
+
+export const { useGetPostsQuery } = extendedApiSlice;
+
+export const selectPostsResult = extendedApiSlice.endpoints.getPosts.select();
+
+//Creates momized selector
+const selectPostsData = createSelector(
+  selectPostsResult,
+  (postsResult) => postsResult.data
+);
 
 // getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
   selectAll: selectAllPosts,
   selectById: selectPostById,
   selectIds: selectPostIds,
-} = postAdapter.getSelectors((state) => state.posts);
-
-export const getPostsStatus = (state) => state.posts.status;
-export const getPostsError = (state) => state.posts.error;
-export const getCount = (state) => state.posts.count;
-
-export const selectPostsByUser = createSelector(
-  [selectAllPosts, (state, userId) => userId],
-  (posts, userId) => posts.filter((post) => post.userId === userId)
-);
-
-export const { increaseCount, reactionAdded } = postsSlice.actions;
-
-export default postsSlice.reducer;
+} = postAdapter.getSelectors((state) => selectPostsData(state) ?? initialState);

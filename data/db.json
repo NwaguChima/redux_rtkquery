@@ -237,7 +237,14 @@
       "title": "qui est esse",
       "body": "hey there, this is an edited testing done",
       "userId": 1,
-      "date": "2022-08-31T01:38:44.846Z"
+      "date": "2022-08-31T01:38:44.846Z",
+      "reactions": {
+        "thumbsUp": 10,
+        "wow": 0,
+        "heart": 0,
+        "rocket": 0,
+        "coffee": 0
+      }
     },
     {
       "id": 3,

@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { selectUserById } from "./usersSlice";
 import { Link, useParams } from "react-router-dom";
